@@ -104,11 +104,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     payment_status: {
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: true,
     },
-    appointment_status: {
+    payment_details: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    payment_id: {
       type: DataTypes.STRING(100),
-      allowNull: false,
+      allowNull: true,
     },
   });
   return Appointment;

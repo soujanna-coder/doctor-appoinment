@@ -3,6 +3,7 @@ const db = require("../models");
 const { Sequelize, DataTypes, Op } = require("sequelize");
 
 const DoctorsDetails = db.doctor;
+
 const createDoctorDetails = async (req, res) => {
   try {
     const doctorDetails = await DoctorsDetails.create(req.body);

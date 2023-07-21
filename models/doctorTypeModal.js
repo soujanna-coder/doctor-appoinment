@@ -11,9 +11,5 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  sequelize.models.Doctor.belongsTo(DoctorType, {
-    foreignKey: "type_id",
-  });
-  DoctorType.hasMany(sequelize.models.Doctor, { foreignKey: "type_id" });
   return DoctorType;
 };

@@ -29,13 +29,14 @@ db.sequelize = sequelize;
 db.otpVerification = require("./otpVerificationModel.js")(sequelize, DataTypes);
 db.user = require("./userModal.js")(sequelize, DataTypes);
 db.workshop = require("./workshopModal.js")(sequelize, DataTypes);
-db.doctor = require("./doctorModal.js")(sequelize, DataTypes);
+
 db.doctorAppointment = require("./doctorAppointmentModal.js")(
   sequelize,
   DataTypes
 );
 db.doctorType = require("./doctorTypeModal.js")(sequelize, DataTypes);
 db.appointment = require("./appointmentModal.js")(sequelize, DataTypes);
+db.doctor = require("./doctorModal.js")(sequelize, DataTypes);
 db.Payment = require("./PaymentModal.js")(sequelize, DataTypes);
 db.status = require("./statusModal.js")(sequelize, DataTypes);
 db.sequelize.sync({ force: false }).then(() => {

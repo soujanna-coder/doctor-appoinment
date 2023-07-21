@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const app = express();
+const multer = require("multer");
+const fs = require("fs"); // Import the fs module
 app.set("view engine", "ejs");
 const corsOptions = {
   origin: "http://localhost:8081",
@@ -35,9 +37,17 @@ app.use("/api/doctor-type", doctorRouter);
 const workshopRouter = require("./routes/workshopRouter");
 app.use("/api/workshop", workshopRouter);
 
-// workshop
+//appointment
 const appointmentRouter = require("./routes/appointmentRouter");
 app.use("/api/appointment", appointmentRouter);
+
+//doctor-appointment
+const doctorAppointmentRouter = require("./routes/doctorAppointmentRouter");
+app.use("/api/doctor-appointments", doctorAppointmentRouter);
+
+//doctor-list
+const doctorListRouter = require("./routes/doctorListRouter");
+app.use("/api/doctor-list", doctorListRouter);
 
 app.get("/", (req, res) => {
   res.render("login", { errorMessage: null });
@@ -48,19 +58,6 @@ app.get("/dashboard", (req, res) => {
 });
 // app.get("/", (req, res) => {
 //   res.sendFile(__dirname + "/index.html");
-// });
-
-// // Set the content type for CSS files
-// app.get("*.css", (req, res) => {
-//   res.header("Content-Type", "text/css");
-//   res.sendFile(__dirname + req.url);
-// });
-// api
-// app.get("/", (req, res) => {
-//   res.json({
-//     name: "Joyguru",
-//     email: "Joyguru@gmail.com",
-//   });
 // });
 
 // admin login
@@ -82,6 +79,33 @@ app.post("/login", (req, res) => {
   }
 });
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const destinationDir = "uploads";
+    if (!fs.existsSync(destinationDir)) {
+      fs.mkdirSync(destinationDir); // Create the directory if it doesn't exist
+    }
+    cb(null, destinationDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    const extname = path.extname(file.originalname);
+    cb(null, file.fieldname + "-" + uniqueSuffix + extname);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+// Set up a route to handle file upload
+app.post("/upload-image", upload.single("image"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send("No file uploaded");
+  }
+  // Get the file path of the uploaded file
+  const filePath = path.join("uploads", req.file.filename).replace(/\\/g, "/");
+  console.log(filePath);
+  res.json({ message: "File uploaded successfully", data: filePath });
+});
 // port
 const PORT = process.env.PORT || 8080;
 
@@ -89,3 +113,5 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
   console.log(`Server is running on ${PORT}`);
 });
+
+// Set up a route to handle file upload

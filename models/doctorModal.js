@@ -42,14 +42,20 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   });
-  return Doctor;
+  // Define the association with DoctorType model
+  Doctor.belongsTo(sequelize.models.DoctorType, {
+    foreignKey: "type_id",
+  });
 
-  // Define the association between Doctor and DoctorAppointment models
-
+  // Define the association with DoctorAppointment model
   Doctor.hasMany(sequelize.models.DoctorAppointment, {
     foreignKey: "doctor_id",
   });
-  sequelize.models.DoctorAppointment.belongsTo(Doctor, {
+  sequelize.models.DoctorType.hasMany(sequelize.models.Doctor, {
+    foreignKey: "type_id",
+  });
+  sequelize.models.DoctorAppointment.belongsTo(sequelize.models.Doctor, {
     foreignKey: "doctor_id",
   });
+  return Doctor;
 };

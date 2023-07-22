@@ -21,7 +21,8 @@ const sendOTP = async (req, res) => {
     }
 
     // Generate a 4-digit OTP
-    const otp = generateOTP(4);
+    const otp = "1234";
+    //const otp = generateOTP(4);
 
     // Get the current timestamp and the timestamp 5 minutes from now
     const currentTime = new Date();
@@ -89,7 +90,8 @@ const resendOTP = async (req, res) => {
     }
 
     // Generate a new 4-digit OTP
-    const otp = generateOTP(4);
+    const otp = "1234";
+    //const otp = generateOTP(4);
 
     // Get the current timestamp and the timestamp 5 minutes from now
     const currentTime = new Date();

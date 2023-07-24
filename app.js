@@ -86,6 +86,70 @@ app.post("/login", (req, res) => {
   }
 });
 
+// get doctor list
+
+const Doctor = db.doctor;
+const DoctorType = db.doctorAppointment;
+const DoctorAppointment = db.doctorType;
+
+app.get("/doctor-list", async (req, res) => {
+  try {
+    const doctors = await Doctor.findAll({
+      include: [DoctorType, DoctorAppointment],
+    });
+    const doctorTypes = await DoctorType.findAll();
+    res.render("doctorList", { doctorList: doctors, doctorTypes: doctorTypes });
+  } catch (err) {
+    console.error("Error fetching doctors:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.get("/add-doctor", async (req, res) => {
+  try {
+    const doctorTypes = await DoctorType.findAll();
+    res.render("addDoctor", { doctorTypes: doctorTypes });
+  } catch (err) {
+    console.error("Error fetching doctors:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+app.post("/add-doctor", async (req, res) => {
+  try {
+    // Create the doctor
+    const doctor = await Doctor.create({
+      name: req.body.name,
+      type_name: req.body.type_name,
+      type_id: req.body.type_id,
+      details1: req.body.details1,
+      details2: req.body.details2,
+      details3: req.body.details3,
+      appointment_time: req.body.appointment_time,
+      appointment_fees: req.body.appointment_fees,
+      appointment_venue: req.body.appointment_venue,
+      mobile_number: req.body.mobile_number,
+    });
+
+    // Create appointments for the doctor
+    const appointmentDates = req.body.appointment_dates;
+    if (appointmentDates && Array.isArray(appointmentDates)) {
+      await Promise.all(
+        appointmentDates.map(async (date) => {
+          await DoctorAppointment.create({
+            doctor_id: doctor.doctor_id,
+            appointment_date: date,
+          });
+        })
+      );
+    }
+
+    res.redirect("/doctor-list");
+  } catch (err) {
+    console.error("Error adding doctor:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const destinationDir = "uploads";
@@ -113,6 +177,7 @@ app.post("/upload-image", upload.single("image"), (req, res) => {
   console.log(filePath);
   res.json({ message: "File uploaded successfully", data: filePath });
 });
+
 // port
 const PORT = process.env.PORT || 8080;
 

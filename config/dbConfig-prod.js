@@ -1,7 +1,7 @@
 module.exports = {
-  HOST: "localhost",
-  USER: "root",
-  PASSWORD: "",
+  HOST: "database-1.cvhs3fo7mzdn.ap-south-1.rds.amazonaws.com",
+  USER: "admin",
+  PASSWORD: "password",
   DB: "doctor_book",
   dialect: "mysql",
   PORT: "3306",

@@ -41,6 +41,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
+    mobile_number: {
+      type: DataTypes.STRING(15),
+      allowNull: false,
+    },
   });
   // Define the association with DoctorType model
   Doctor.belongsTo(sequelize.models.DoctorType, {

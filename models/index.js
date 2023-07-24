@@ -34,11 +34,13 @@ db.doctorAppointment = require("./doctorAppointmentModal.js")(
   sequelize,
   DataTypes
 );
+
 db.doctorType = require("./doctorTypeModal.js")(sequelize, DataTypes);
 db.appointment = require("./appointmentModal.js")(sequelize, DataTypes);
 db.doctor = require("./doctorModal.js")(sequelize, DataTypes);
 db.Payment = require("./PaymentModal.js")(sequelize, DataTypes);
 db.status = require("./statusModal.js")(sequelize, DataTypes);
+db.bookingType = require("./bookingTypeModal.js")(sequelize, DataTypes);
 db.sequelize.sync({ force: false }).then(() => {
   console.log("Drop and re-sync db.");
 });

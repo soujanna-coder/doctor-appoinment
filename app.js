@@ -5,6 +5,7 @@ const app = express();
 const multer = require("multer");
 const fs = require("fs"); // Import the fs module
 app.set("view engine", "ejs");
+const db = require("./models");
 const corsOptions = {
   origin: "http://localhost:8081",
 };
@@ -53,8 +54,14 @@ app.get("/", (req, res) => {
   res.render("login", { errorMessage: null });
 });
 
-app.get("/dashboard", (req, res) => {
-  res.render("dashboard");
+app.get("/appointment", async (req, res) => {
+  const Appointment = db.appointment;
+  const appointmentDetails = await Appointment.findAll();
+  console.log("appointmentDetails", appointmentDetails);
+  res.render("appointment", {
+    appointments: appointmentDetails,
+    appointmentNumber: 1,
+  });
 });
 // app.get("/", (req, res) => {
 //   res.sendFile(__dirname + "/index.html");
@@ -72,7 +79,7 @@ app.post("/login", (req, res) => {
   console.log(username, adminPassword);
   if (username === adminUsername && password === adminPassword) {
     // Redirect to the dashboard on successful login
-    res.redirect("/dashboard");
+    res.redirect("/appointment");
   } else {
     // Invalid credentials, show login page with error message
     res.render("login", { errorMessage: "Invalid username or password" });

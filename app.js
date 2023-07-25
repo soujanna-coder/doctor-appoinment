@@ -56,13 +56,24 @@ app.get("/", (req, res) => {
 
 app.get("/appointment", async (req, res) => {
   const Appointment = db.appointment;
-  const appointmentDetails = await Appointment.findAll();
-  console.log("appointmentDetails", appointmentDetails);
-  res.render("appointment", {
-    appointments: appointmentDetails,
-    appointmentNumber: 1,
-  });
+
+  // Handle the rejection of the promise.
+  try {
+    const appointmentDetails = await Appointment.findAll();
+    console.log("appointmentDetails", appointmentDetails);
+    res.render("appointment", {
+      appointments: appointmentDetails,
+      appointmentNumber: 1,
+    });
+  } catch (error) {
+    console.log("Error:", error);
+    res.render("appointment", {
+      appointments: null,
+      appointmentNumber: 0,
+    });
+  }
 });
+
 // app.get("/", (req, res) => {
 //   res.sendFile(__dirname + "/index.html");
 // });
@@ -149,7 +160,60 @@ app.post("/add-doctor", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+// workshop list
+app.get("/workshop-list", async (req, res) => {
+  const Workshop = db.workshop;
+  try {
+    const workshop = await Workshop.findAll();
 
+    res.render("workshops", {
+      Workshops: workshop,
+      workshopNumber: 1,
+    });
+  } catch (error) {
+    res.render("workshops", {
+      Workshops: null,
+      workshopNumber: 1,
+    });
+  }
+});
+
+//doctor List
+
+app.get("/doctor-type-list", async (req, res) => {
+  const DoctorType = db.doctorType;
+  try {
+    const doctorType = await DoctorType.findAll();
+
+    res.render("doctorType", {
+      DoctorTypes: doctorType,
+      doctorTypeNumber: 1,
+    });
+  } catch (error) {
+    res.render("doctorType", {
+      DoctorTypes: 0,
+      doctorTypeNumber: 1,
+    });
+  }
+});
+// book type
+
+app.get("/book-type-list", async (req, res) => {
+  const BookingType = db.bookingType;
+  try {
+    const bookingType = await BookingType.findAll();
+
+    res.render("BookType", {
+      BookingTypes: bookingType,
+      bookingTypeNumber: 1,
+    });
+  } catch (error) {
+    res.render("BookType", {
+      BookingTypes: 0,
+      bookingTypeNumber: 1,
+    });
+  }
+});
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const destinationDir = "public/uploads";

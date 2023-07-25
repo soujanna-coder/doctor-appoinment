@@ -7,10 +7,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Doctor List</title>
+    <title>Workshop  List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="keywords" content="Doctor List" />
+    <meta name="keywords" content="Workshop  List" />
     <script type="application/x-javascript">
       addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); }
     </script>
@@ -69,16 +69,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       <div id="page-wrapper">
         <div class="main-page">
           <div class="tables">
-            <h2 class="title1">Doctor List</h2>
+            <h2 class="title1">Workshop  List</h2>
             <div class="table-responsive bs-example widget-shadow">
-              <h4>Doctor List Table:</h4>
+              <h4>Workshop  List Table:</h4>
               <br>
-              <button type="button" class="btn btn-primary" href="/add-doctor"> <i class="fa fa-plus"></i><span>&nbsp;&nbsp;</span> Add Doctor</button>
+              <button type="button" class="btn btn-primary" href="/add-workshop"> <i class="fa fa-plus"></i><span>&nbsp;&nbsp;</span> Add Workshop </button>
             </br>
              </br>
             </div>
               <table class="table table-bordered">
-                <thead>
+               <thead>
                   <tr>
                     <th >#</th>
           <th>Workshop Name</th>
@@ -92,24 +92,26 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </thead>
                 <tbody>
                   <tr>
-                 
-   <% for (const doctor of doctorList) { %>
+    <% if(Workshops != null) { console.log(Workshops);%>    
+     <% for (const workshop of Workshops) { %>
         <tr>
             <th scope="row"><%= workshopNumber++ %></th>
-            <td><%= workshop.workshop_name %></td>
-            <td><%= workshop.workshop_date %></td>
-            <td><%= workshop.workshop_time %></td>
-            <td><%= workshop.workshop_duration %></td>
-            <td><%= workshop.workshop_venue %></td>
-            <td>$<%= workshop.workshop_fees.toFixed(2) %></td>
+            <td><%= (workshop.workshop_name) %></td>
+            <td><%= (workshop.workshop_date) %></td>
+            <td><%= (workshop.workshop_time) %></td>
+            <td><%= (workshop.workshop_duration) %></td>
+            <td><%= (workshop.workshop_venue) %></td>
+            <td>$<%= (workshop.workshop_fees.toFixed(2)) %></td>
           <td>
-        <a href="/edit-workshops/<%= doctor.doctor_id%>" class="btn btn-secondary">
+       
+        <a href="/edit-workshops/<%= workshop.workshop_id%>" class="btn btn-secondary">
           <i class="fa fa-edit"></i> Edit
         </a>
           </td>
 
         </tr>
       <% } %>
+  <% } %>
                   </tr>
                
               
@@ -128,9 +130,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <script src="/js/SidebarNav.min.js" type="text/javascript"></script>
     <script>
       var appointmentNumber = 0;
-const button = document.querySelector("button[href='/add-doctor']");
+const button = document.querySelector("button[href='/add-workshop']");
 button.addEventListener("click", function() {
-  window.location.href = "/add-doctor";
+  window.location.href = "/add-workshop";
 });
       $(".sidebar-menu").SidebarNav();
     </script>

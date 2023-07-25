@@ -7,10 +7,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Appoinment List</title>
+    <title>Book type List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="keywords" content="Appoinment List" />
+    <meta name="keywords" content="Doctor type List" />
     <script type="application/x-javascript">
       addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); }
     </script>
@@ -69,68 +69,40 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       <div id="page-wrapper">
         <div class="main-page">
           <div class="tables">
-            <h2 class="title1">Appointment List</h2>
+            <h2 class="title1">Book type  List</h2>
             <div class="table-responsive bs-example widget-shadow">
-              <h4>Appointment List Table:</h4>
+              <h4>Book type List Table:</h4>
+              <br>
+              <button type="button" class="btn btn-primary" href="/add-book-type"> <i class="fa fa-plus"></i><span>&nbsp;&nbsp;</span> Add Book type </button>
+            </br>
+             </br>
+            </div>
               <table class="table table-bordered">
-                <thead>
+               <thead>
                   <tr>
                     <th >#</th>
-                    <th>Appointment Date</th>
-                    <th>Appointment Time</th>
-                    <th>Appointment Venue</th>
-                    <th>Workshop Name</th>
-                    <th>Booking Amount</th>
-                    <th>Booking From</th>
-                    <th>Booking Type</th>
-                    <th>Doctor Name</th>
-                    <th>Doctor Type</th>
-                    <th>Document URL</th>
-                    <th>Email ID</th>
-                    <th>Full Name</th>
-                    <th>Gender</th>
-                    <th>Last Edu</th>
-                    <th>Mobile No</th>
-                    <th>Nationality</th>
-                    <th>State</th>
-                    <th>Subject</th>
-                    <th>Category</th>
-                    <th>Whatsapp No</th>
-                    <th>Address</th>
-                    <th>Payment Status</th>
+          <th>Book Type</th>            
+          <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-               <% if(appointments!=null) { %>
-   <% for (const appointment of appointments) { %>
+    <% if(BookingTypes != null) { console.log(BookingTypes);%>    
+     <% for (const BookingType of BookingTypes) { %>
         <tr>
-             <th scope="row"><%= appointmentNumber++ %></th>
-          <td><%= appointment.appointment_date %></td>
-          <td><%= appointment.appointment_time %></td>
-          <td><%= appointment.appointment_venue %></td>
-          <td><%= appointment.workshop_name %></td>
-          <td><%= appointment.booking_amount %></td>
-          <td><%= appointment.booking_from %></td>
-          <td><%= appointment.booking_type %></td>
-          <td><%= appointment.doctor_name %></td>
-          <td><%= appointment.doctor_type %></td>
-           <td><a href="<%= appointment.document_url %>"><%= appointment.document_url %></a></td>
-          <td><%= appointment.email_id %></td>
-          <td><%= appointment.full_name %></td>
-          <td><%= appointment.gender %></td>
-          <td><%= appointment.last_edu %></td>
-          <td><%= appointment.mobile_no %></td>
-          <td><%= appointment.nationality %></td>
-          <td><%= appointment.state %></td>
-          <td><%= appointment.subject %></td>
-          <td><%= appointment.category %></td>
-          <td><%= appointment.whatsapp_no %></td>
-          <td><%= appointment.address %></td>
-          <td><%= appointment.payment_status %></td>
+            <th scope="row"><%= bookingTypeNumber++ %></th>
+            <td><%= (BookingType.booking_type_name) %></td>
+
+          <td>
+       
+        <a href="/edit-book-type/<%= BookingType.booking_type%>" class="btn btn-secondary">
+          <i class="fa fa-edit"></i> Edit
+        </a>
+          </td>
+
         </tr>
       <% } %>
-        <% } %>
+  <% } %>
                   </tr>
                
               
@@ -148,7 +120,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <!-- side nav js -->
     <script src="/js/SidebarNav.min.js" type="text/javascript"></script>
     <script>
-      var appointmentNumber = 0;
+
+const button = document.querySelector("button[href='/add-book-type']");
+button.addEventListener("click", function() {
+  window.location.href = "/add-book-type";
+});
       $(".sidebar-menu").SidebarNav();
     </script>
     <!-- //side nav js -->

@@ -100,8 +100,9 @@ app.post("/login", (req, res) => {
 // get doctor list
 
 const Doctor = db.doctor;
-const DoctorType = db.doctorAppointment;
-const DoctorAppointment = db.doctorType;
+
+const DoctorType = db.doctorType;
+const DoctorAppointment = db.doctorAppointment;
 
 app.get("/doctor-list", async (req, res) => {
   try {

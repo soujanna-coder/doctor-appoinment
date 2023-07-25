@@ -37,10 +37,14 @@ const sendOTP = async (req, res) => {
 
     // You can send the OTP to the user's mobile number here (e.g., via SMS)
 
-    res.json({ message: "OTP sent successfully.", data: null });
+    return res.json({
+      status: 200,
+      message: "OTP sent successfully.",
+      data: null,
+    });
   } catch (err) {
     console.error("Error storing OTP in the database:", err);
-    res.status(500).json({ message: "Failed to send OTP." });
+    res.json({ status: 500, message: "Failed to send OTP." });
   }
 };
 
@@ -71,10 +75,10 @@ const login = async (req, res) => {
     }
 
     // The OTP is valid; you can log the user in here
-    res.json({ message: "Login successful!", data: user });
+    return res.json({ status: 200, message: "Login successful!", data: user });
   } catch (err) {
     console.error("Error validating OTP:", err);
-    res.status(500).json({ message: "Failed to validate OTP." });
+    return res.json({ status: 500, message: "Failed to validate OTP." });
   }
 };
 
@@ -106,10 +110,10 @@ const resendOTP = async (req, res) => {
 
     // You can send the new OTP to the user's mobile number here (e.g., via SMS)
     console.log("New OTP sent successfully:", otp);
-    res.json({ message: "New OTP sent successfully." });
+    res.json({ status: 200, message: "New OTP sent successfully." });
   } catch (err) {
     console.error("Error resending OTP:", err);
-    res.status(500).json({ message: "Failed to resend OTP." });
+    return res.json({ status: 500, message: "Failed to resend OTP." });
   }
 };
 

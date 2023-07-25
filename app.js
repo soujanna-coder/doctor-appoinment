@@ -152,7 +152,7 @@ app.post("/add-doctor", async (req, res) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const destinationDir = "uploads";
+    const destinationDir = "public/uploads";
     if (!fs.existsSync(destinationDir)) {
       fs.mkdirSync(destinationDir); // Create the directory if it doesn't exist
     }
@@ -169,13 +169,30 @@ const upload = multer({ storage: storage });
 
 // Set up a route to handle file upload
 app.post("/upload-image", upload.single("image"), (req, res) => {
-  if (!req.file) {
-    return res.status(400).send("No file uploaded");
+  try {
+    if (!req.file) {
+      return res.json({
+        status: 400,
+        message: "No file uploaded",
+      });
+    }
+    // Get the file path of the uploaded file
+    const filePath = path
+      .join("uploads", req.file.filename)
+      .replace(/\\/g, "/");
+    console.log(filePath);
+    res.json({
+      status: 200,
+      message: "File uploaded successfully",
+      data: filePath,
+    });
+  } catch (err) {
+    console.error("Error uploading file:", err);
+    return res.json({
+      status: 500,
+      message: "Internal Server Error",
+    });
   }
-  // Get the file path of the uploaded file
-  const filePath = path.join("uploads", req.file.filename).replace(/\\/g, "/");
-  console.log(filePath);
-  res.json({ message: "File uploaded successfully", data: filePath });
 });
 
 // port

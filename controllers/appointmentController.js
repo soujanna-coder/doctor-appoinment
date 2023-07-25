@@ -8,10 +8,17 @@ const Appointment = db.appointment;
 const createAppointment = async (req, res) => {
   try {
     const appointment = await Appointment.create(req.body);
-    res.json({ message: "Appointment created successfully!", appointment });
+    res.json({
+      status: 200,
+      message: "Appointment created successfully!",
+      appointment,
+    });
   } catch (err) {
     console.error("Error creating appointment:", err);
-    res.status(500).json({ message: "Failed to create appointment." });
+    return res.json({
+      status: 500,
+      message: "Failed to create appointment.",
+    });
   }
 };
 
@@ -50,10 +57,17 @@ const updateAppointment = async (req, res) => {
       return res.status(404).json({ message: "Appointment not found." });
     }
     await appointment.update(req.body);
-    res.json({ message: "Appointment updated successfully!", appointment });
+    res.json({
+      status: 200,
+      message: "Appointment updated successfully!",
+      appointment,
+    });
   } catch (err) {
     console.error("Error updating appointment:", err);
-    res.status(500).json({ message: "Failed to update appointment." });
+    return res.json({
+      status: 500,
+      message: "Failed to update appointment.",
+    });
   }
 };
 
@@ -90,10 +104,17 @@ const userAllGetAppointmentById = async (req, res) => {
       });
     }
 
-    res.json({ message: "User Appointment History.", data: appointment });
+    return res.json({
+      status: 200,
+      message: "User Appointment History.",
+      data: appointment,
+    });
   } catch (err) {
     console.error("Error fetching appointment:", err);
-    res.status(500).json({ message: "Failed to fetch appointment." });
+    return res.json({
+      status: 500,
+      message: "Failed to fetch appointment.",
+    });
   }
 };
 module.exports = {

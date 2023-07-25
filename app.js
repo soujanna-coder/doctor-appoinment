@@ -110,10 +110,20 @@ app.get("/doctor-list", async (req, res) => {
       include: [DoctorType, DoctorAppointment],
     });
     const doctorTypes = await DoctorType.findAll();
-    res.render("doctorList", { doctorList: doctors, doctorTypes: doctorTypes });
+    console.log("test------------------------");
+    res.render("doctorList", {
+      doctorList: doctors,
+      doctorTypes: doctorTypes,
+      doctorNumber: 1,
+    });
   } catch (err) {
     console.error("Error fetching doctors:", err);
-    res.status(500).send("Internal Server Error");
+    res.render("doctorList", {
+      doctorList: null,
+      doctorTypes: null,
+      doctorNumber: 1,
+    });
+    // res.status(500).send("Internal Server Error");
   }
 });
 
@@ -129,10 +139,12 @@ app.get("/add-doctor", async (req, res) => {
 app.post("/add-doctor", async (req, res) => {
   try {
     // Create the doctor
+    console.log(req.body);
+    const selectedOption = req.body.type_id.split("|");
     const doctor = await Doctor.create({
       name: req.body.name,
-      type_name: req.body["doctor_type_name"],
-      type_id: req.body.type_id,
+      type_name: selectedOption[1],
+      type_id: selectedOption[0],
       details1: req.body.details1,
       details2: req.body.details2,
       details3: req.body.details3,

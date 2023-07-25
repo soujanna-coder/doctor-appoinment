@@ -99,7 +99,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                       required
                     >
                       <% doctorTypes.forEach(doctorType => { %>
-                      <option value="<%= doctorType.type_id %>" data-name="<%= doctorType.doctor_type_name %>">
+                      <option value="<%= doctorType.type_id + '|' + doctorType.doctor_type_name %>" >
                         <%= doctorType.doctor_type_name %>
                       </option>
                       <% }) %>
@@ -257,6 +257,11 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
   container.append(newDateInput);
       }
       $(".sidebar-menu").SidebarNav();
+      document.getElementById("type_id").addEventListener("change", function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const doctorTypeName = selectedOption.getAttribute("data-name");
+    document.getElementById("selected_doctor_type_name").value = doctorTypeName;
+  });
     </script>
     <!-- //side nav js -->
 

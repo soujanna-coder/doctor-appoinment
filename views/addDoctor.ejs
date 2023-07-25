@@ -99,7 +99,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
                       required
                     >
                       <% doctorTypes.forEach(doctorType => { %>
-                      <option value="<%= doctorType.type_id %>">
+                      <option value="<%= doctorType.type_id %>" data-name="<%= doctorType.doctor_type_name %>">
                         <%= doctorType.doctor_type_name %>
                       </option>
                       <% }) %>

@@ -131,7 +131,7 @@ app.post("/add-doctor", async (req, res) => {
     // Create the doctor
     const doctor = await Doctor.create({
       name: req.body.name,
-      type_name: req.body.type_name,
+      type_name: req.body["doctor_type_name"],
       type_id: req.body.type_id,
       details1: req.body.details1,
       details2: req.body.details2,

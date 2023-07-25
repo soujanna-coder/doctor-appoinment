@@ -178,7 +178,7 @@ app.post("/upload-image", upload.single("image"), (req, res) => {
     }
     // Get the file path of the uploaded file
     const filePath = path
-      .join("uploads", req.file.filename)
+      .join("http://43.205.35.147:8080/uploads", req.file.filename)
       .replace(/\\/g, "/");
     console.log(filePath);
     res.json({

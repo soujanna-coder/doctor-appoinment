@@ -72,7 +72,11 @@ const doctorList = async (req, res) => {
     res.json(response);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "Error fetching data" });
+    const response = {
+      status: "500",
+      message: "Error fetching data",
+    };
+    res.json(response);
   }
 };
 module.exports = {

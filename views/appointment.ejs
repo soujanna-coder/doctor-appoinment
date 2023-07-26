@@ -111,7 +111,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
           <td><%= appointment.booking_amount %></td>
           <td><%= appointment.booking_from %></td>
           <td><%= appointment.doctor_name %></td>
-           <td><a href="<%= appointment.document_url %>"><%= appointment.document_url %></a></td>
+           <td><a href="<%= appointment.document_url.substring(appointment.document_url.lastIndexOf('/') + 1) %>"><%= appointment.document_url %></a></td>
           <td><%= appointment.email_id %></td>
           <td><%= appointment.full_name %></td>
           <td><%= appointment.gender %></td>

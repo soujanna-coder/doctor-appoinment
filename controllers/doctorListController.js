@@ -61,13 +61,20 @@ const doctorList = async (req, res) => {
         available_date,
       };
     });
-
+    const notification_details = {
+      instance_id: "64C0EE7B55914",
+      access_token: "64bffee720a77",
+      login_email: "soumyajitdas500@gmail.com",
+      login_password: "Console@1234",
+      login_link: "https://hisocial.in/login",
+    };
     // Create the final response
     const response = {
       status: "200",
       message: "Successful",
       workshop_data: workshops,
       doctor_data: transformedDoctors,
+      notification_details: notification_details,
     };
 
     res.json(response);

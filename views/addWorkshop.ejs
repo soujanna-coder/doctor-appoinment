@@ -67,178 +67,109 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
       <div id="page-wrapper">
         <div class="main-page">
           <div class="row">
-            <h1 class="mb-4">Add Doctor</h1>
+            <h1 class="mb-4">Add Workshop</h1>
             <a href="javascript:history.go(-1)" class="btn btn-secondary mt-3">
-  <i class="fa fa-arrow-left"></i> Back
-</a>
+              <i class="fa fa-arrow-left"></i> Back
+            </a>
             <div class="form-three widget-shadow">
-              <form action="/add-doctor" method="post" class="form-horizontal">
+              <form
+                action="/add-workshop-list"
+                method="post"
+                class="form-horizontal"
+              >
                 <div class="form-group">
                   <label for="focusedinput" class="col-sm-2 control-label"
-                    >Name:</label
+                    >Workshop Name:</label
                   >
                   <div class="col-sm-8">
                     <input
                       type="text"
                       class="form-control1"
                       id="name"
-                      name="name"
+                      name="workshop_name"
                       required
                     />
                   </div>
                 </div>
+
                 <div class="form-group">
-                  <label for="type_id" class="col-sm-2 control-label"
-                    >Doctor Type:</label
-                  >
-                  <div class="col-sm-8">
-                    <select
-                      class="form-control1"
-                      id="type_id"
-                      name="type_id"
-                      required
-                    >
-                      <% doctorTypes.forEach(doctorType => { %>
-                      <option value="<%= doctorType.type_id + '|' + doctorType.doctor_type_name %>" >
-                        <%= doctorType.doctor_type_name %>
-                      </option>
-                      <% }) %>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="mobile_number" class="col-sm-2 control-label"
-                    >Mobile Number:</label
+                  <label for="focusedinput" class="col-sm-2 control-label"
+                    >Date:</label
                   >
                   <div class="col-sm-8">
                     <input
-                      type="text"
                       class="form-control1"
-                      id="mobile_number"
-                      name="mobile_number"
+                      type="date"
+                      id="workshop_date"
+                      name="workshop_date"
                       required
                     />
                   </div>
                 </div>
-
-                <!-- Appointment Dates -->
-                <div class="form-group">
-                  <label class="col-sm-2 control-label"
-                    >Appointment Dates:</label
-                  >
-                  <div id="appointment_dates_container">
-                    <div class="row">
-                    <div class="col-sm-8">
-                      <input
-                        type="date"
-                        class="form-control1"
-                        name="appointment_dates[]"
-                        required
-                      />
-                    </div>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    class="btn btn-success mt-2"
-                    onclick="addAppointmentDate()"
-                  >
-                    Add Another Date
-                  </button>
-                </div>
-
                 <!-- Additional Details -->
                 <div class="form-group">
-                  <label for="details1" class="col-sm-2 control-label"
-                    >Details 1:</label
+                  <label for="focusedinput" class="col-sm-2 control-label"
+                    >Time:</label
                   >
                   <div class="col-sm-8">
                     <input
-                      type="text"
                       class="form-control1"
-                      id="details1"
-                      name="details1"
-                      required
-                    />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="details1" class="col-sm-2 control-label"
-                    >Details 2:</label
-                  >
-                  <div class="col-sm-8">
-                    <input
-                      type="text"
-                      class="form-control1"
-                      id="details2"
-                      name="details2"
-                      required
-                    />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="details3" class="col-sm-2 control-label"
-                    >Details 3:</label
-                  >
-                  <div class="col-sm-8">
-                    <input
-                      type="text"
-                      class="form-control1"
-                      id="details3"
-                      name="details3"
+                      type="time"
+                      id="workshop_time"
+                      name="workshop_time"
                       required
                     />
                   </div>
                 </div>
 
-                <!-- Appointment Time and Fees -->
                 <div class="form-group">
-                  <label for="appointment_time" class="col-sm-2 control-label"
-                    >Appointment Time:</label
-                  >
-                  <div class="col-sm-4">
-                    <input
-                      type="time"
-                      class="form-control1"
-                      id="appointment_time"
-                      name="appointment_time"
-                      required
-                    />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="appointment_fees" class="col-sm-2 control-label"
-                    >Appointment Fees:</label
-                  >
-                  <div class="col-sm-4">
-                    <input
-                      type="number"
-                      step="0.01"
-                      class="form-control1"
-                      id="appointment_fees"
-                      name="appointment_fees"
-                      required
-                    />
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label for="appointment_venue" class="col-sm-2 control-label"
-                    >Appointment Venue:</label
+                  <label for="focusedinput" class="col-sm-2 control-label"
+                    >Duration:</label
                   >
                   <div class="col-sm-8">
                     <input
-                      type="text"
                       class="form-control1"
-                      id="appointment_venue"
-                      name="appointment_venue"
+                      type="text"
+                      id="workshop_duration"
+                      name="workshop_duration"
                       required
                     />
                   </div>
                 </div>
-                </br>
-                <button type="submit" class="btn btn-primary">Add</button>
+                <div class="form-group">
+                  <label for="focusedinput" class="col-sm-2 control-label"
+                    >Venue:</label
+                  >
+                  <div class="col-sm-8">
+                    <input
+                      class="form-control1"
+                      type="text"
+                      id="workshop_venue"
+                      name="workshop_venue"
+                      required
+                    />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="focusedinput" class="col-sm-2 control-label"
+                    >Fees:</label
+                  >
+                  <div class="col-sm-8">
+                    <input
+                      class="form-control1"
+                      type="text"
+                      id="workshop_fees"
+                      name="workshop_fees"
+                      step="0.01"
+                      required
+                    />
+                  </div>
+                </div>
+              </br>
+                <button type="submit" class="btn btn-primary d-block">
+                  Add
+                </button>
               </form>
-           
             </div>
           </div>
         </div>
@@ -251,17 +182,7 @@ SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony
     <!-- side nav js -->
     <script src="/js/SidebarNav.min.js" type="text/javascript"></script>
     <script>
-      function addAppointmentDate() {
-  var container = $("#appointment_dates_container");
-  var newDateInput = $("<div class='row'><div class='col-sm-8'><input type='date' class='form-control1 mt-2' name='appointment_dates[]' required/></div></div>");
-  container.append(newDateInput);
-      }
       $(".sidebar-menu").SidebarNav();
-    document.getElementById("type_id").addEventListener("change", function() {
-    const selectedOption = this.options[this.selectedIndex];
-    const doctorTypeName = selectedOption.getAttribute("data-name");
-    document.getElementById("selected_doctor_type_name").value = doctorTypeName;
-  });
     </script>
     <!-- //side nav js -->
 

@@ -108,6 +108,7 @@ app.get("/doctor-list", async (req, res) => {
   try {
     const doctors = await Doctor.findAll({
       include: [DoctorType, DoctorAppointment],
+      order: [["createdAt", "DESC"]],
     });
     const doctorTypes = await DoctorType.findAll();
     console.log("test------------------------");
@@ -136,6 +137,7 @@ app.get("/add-doctor", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
 app.post("/add-doctor", async (req, res) => {
   try {
     // Create the doctor
@@ -173,6 +175,76 @@ app.post("/add-doctor", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+app.get("/edit-doctor/:doctor_id", async (req, res) => {
+  const doctorId = req.params.doctor_id;
+  console.log("doctorId" + doctorId);
+  try {
+    // Find the doctor by ID
+
+    const doctorTypes = await DoctorType.findAll();
+    const doctor = await Doctor.findByPk(doctorId, {
+      include: [DoctorType, DoctorAppointment],
+    });
+    console.log("doctor" + JSON.stringify(doctor, null, 2));
+
+    res.render("editDoctor", {
+      doctorTypes: doctorTypes,
+      doctor: doctor,
+    });
+  } catch (err) {
+    console.error("Error fetching doctors:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// Set up the route for updating a doctor
+app.post("/update-doctor/:id", async (req, res) => {
+  const doctorId = req.params.id;
+  try {
+    // Find the doctor by ID
+    const doctor = await Doctor.findByPk(doctorId);
+    if (!doctor) {
+      return res.status(404).send("Doctor not found");
+    }
+
+    // Update the doctor's details
+    await doctor.update({
+      name: req.body.name,
+      type_name: req.body.type_id.split("|")[1], // Extracting the doctor_type_name from the combined value
+      type_id: req.body.type_id.split("|")[0],
+      details1: req.body.details1,
+      details2: req.body.details2,
+      details3: req.body.details3,
+      appointment_time: req.body.appointment_time,
+      appointment_fees: req.body.appointment_fees,
+      appointment_venue: req.body.appointment_venue,
+      mobile_number: req.body.mobile_number,
+      // Update other fields as required
+    });
+
+    // Delete existing appointments for the doctor
+    await DoctorAppointment.destroy({ where: { doctor_id: doctorId } });
+
+    // Create new appointments for the doctor
+    const appointmentDates = req.body.appointment_dates;
+    if (appointmentDates && Array.isArray(appointmentDates)) {
+      await Promise.all(
+        appointmentDates.map(async (date) => {
+          await DoctorAppointment.create({
+            doctor_id: doctorId,
+            appointment_date: date,
+          });
+        })
+      );
+    }
+
+    res.redirect("/doctor-list");
+  } catch (err) {
+    console.error("Error updating doctor:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 // workshop list
 app.get("/workshop-list", async (req, res) => {
   const Workshop = db.workshop;
@@ -191,7 +263,54 @@ app.get("/workshop-list", async (req, res) => {
   }
 });
 
-//doctor List
+app.get("/add-workshop", async (req, res) => {
+  try {
+    res.render("addWorkshop");
+  } catch (err) {
+    console.error("Error fetching workshop list", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.post("/add-workshop-list", async (req, res) => {
+  try {
+    // Save the workshop data to the database using Sequelize model
+    console.log("----------------------");
+    const Workshop = db.workshop;
+    await Workshop.create(req.body);
+    res.redirect("/workshop-list");
+  } catch (err) {
+    // Handle any errors that occur during data insertion
+    console.error(error);
+    res.send("Error adding workshop. Please try again.");
+  }
+});
+
+app.get("/edit-workshops/:id", async (req, res) => {
+  const workshopId = req.params.id;
+  try {
+    const Workshop = db.workshop;
+    const workshopDetails = await Workshop.findByPk(workshopId);
+    res.render("editWorkshop", { workshop: workshopDetails });
+  } catch (err) {
+    console.error("Error fetching workshop list", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.post("/update-workshop/:id", async (req, res) => {
+  const workshopId = req.params.id;
+  try {
+    const Workshop = db.workshop;
+    const workshopDetails = await Workshop.findByPk(workshopId);
+    await workshopDetails.update(req.body);
+    res.redirect("/workshop-list");
+  } catch (err) {
+    console.error("Error fetching workshop list", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+//doctor type List
 
 app.get("/doctor-type-list", async (req, res) => {
   const DoctorType = db.doctorType;
@@ -209,6 +328,27 @@ app.get("/doctor-type-list", async (req, res) => {
     });
   }
 });
+app.get("/add-doctor-type", async (req, res) => {
+  try {
+    res.render("addDoctorType");
+  } catch (err) {
+    console.error("Error fetching doctors list:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.post("/add-doctor-type", async (req, res) => {
+  try {
+    const doctorType = await DoctorType.create({
+      doctor_type_name: req.body.doctor_type_name,
+    });
+    res.redirect("/doctor-type-list");
+  } catch (err) {
+    console.error("Error fetching doctors list:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 // book type
 
 app.get("/book-type-list", async (req, res) => {
@@ -227,6 +367,28 @@ app.get("/book-type-list", async (req, res) => {
     });
   }
 });
+
+app.get("/add-book-type", async (req, res) => {
+  try {
+    res.render("addBookType");
+  } catch (err) {
+    console.error("Error fetching doctors:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+app.post("/add-book-type", async (req, res) => {
+  try {
+    const BookingType = db.bookingType;
+    const bookingType = await BookingType.create({
+      booking_type_name: req.body.booking_type_name,
+    });
+    res.redirect("/book-type-list");
+  } catch (err) {
+    console.error("Error fetching doctors:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const destinationDir = "public/uploads";

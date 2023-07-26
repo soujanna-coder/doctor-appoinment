@@ -96,6 +96,7 @@ const userAllGetAppointmentById = async (req, res) => {
       where: {
         user_id: specificUserId,
       },
+      order: [["createdAt", "DESC"]],
     });
     if (!appointment) {
       return res.status(404).json({

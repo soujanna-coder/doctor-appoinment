@@ -56,22 +56,61 @@ app.get("/", (req, res) => {
 
 app.get("/appointment", async (req, res) => {
   const Appointment = db.appointment;
-
-  // Handle the rejection of the promise.
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10; // Number of items per page
+    const offset = (page - 1) * limit;
+    const searchQuery = req.query.search;
+
+    let whereClause = {};
+    if (searchQuery) {
+      whereClause = {
+        [Op.or]: [
+          { workshop_name: { [Op.like]: `%${searchQuery}%` } },
+          { doctor_name: { [Op.like]: `%${searchQuery}%` } },
+          { subject: { [Op.like]: `%${searchQuery}%` } },
+          { mobile_no: { [Op.like]: `%${searchQuery}%` } },
+          { booking_type: { [Op.like]: `%${searchQuery}%` } },
+          { doctor_type: { [Op.like]: `%${searchQuery}%` } },
+          { whatsapp_no: { [Op.like]: `%${searchQuery}%` } },
+          { payment_status: { [Op.like]: `%${searchQuery}%` } },
+          { full_name: { [Op.like]: `%${searchQuery}%` } },
+          { state: { [Op.like]: `%${searchQuery}%` } },
+        ],
+      };
+    }
+
+    const totalItems = await Appointment.count({ where: whereClause });
+    const totalPages = Math.ceil(totalItems / limit);
+
     const appointmentDetails = await Appointment.findAll({
+      where: whereClause,
       order: [["createdAt", "DESC"]],
+      limit: limit,
+      offset: offset,
     });
-    console.log("appointmentDetails", appointmentDetails);
+
     res.render("appointment", {
       appointments: appointmentDetails,
-      appointmentNumber: 1,
+      appointmentNumber: offset + 1,
+      pagination: {
+        totalPages: totalPages,
+        currentPage: page,
+        hasPreviousPage: page > 1,
+        hasNextPage: page < totalPages,
+      },
     });
   } catch (error) {
     console.log("Error:", error);
     res.render("appointment", {
       appointments: null,
       appointmentNumber: 0,
+      pagination: {
+        totalPages: 0,
+        currentPage: 1,
+        hasPreviousPage: false,
+        hasNextPage: false,
+      },
     });
   }
 });

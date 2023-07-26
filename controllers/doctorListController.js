@@ -36,6 +36,7 @@ const doctorList = async (req, res) => {
         "appointment_time",
         "appointment_fees",
         "appointment_venue",
+        "mobile_number",
       ],
       include: [
         {

@@ -59,7 +59,9 @@ app.get("/appointment", async (req, res) => {
 
   // Handle the rejection of the promise.
   try {
-    const appointmentDetails = await Appointment.findAll();
+    const appointmentDetails = await Appointment.findAll({
+      order: [["createdAt", "DESC"]],
+    });
     console.log("appointmentDetails", appointmentDetails);
     res.render("appointment", {
       appointments: appointmentDetails,

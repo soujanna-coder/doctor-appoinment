@@ -10,7 +10,7 @@ const corsOptions = {
   origin: "http://localhost:8081",
 };
 app.use(express.static(path.join(__dirname, "public")));
-
+const { Op } = require("sequelize");
 // Set up the view engine
 app.set("views", path.join(__dirname, "views"));
 // global middleware

@@ -4,6 +4,15 @@ const { Sequelize, DataTypes, Op } = require("sequelize");
 const User = db.user;
 const OTPVerification = db.otpVerification;
 const { generateOTP } = require("../otpUtils");
+const axios = require("axios");
+
+const bearerToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEwNDg0IDUiLCJuYmYiOjE2OTMwMzgxNDIsImV4cCI6MTcyNDU3NDE0MiwiaWF0IjoxNjkzMDM4MTQyLCJpc3MiOiJodHRwczovL2J1bGtzbXMuYnNubC5pbjo1MDEwIiwiYXVkIjoiMTA0ODQgNSJ9.3zzhR-D2kYV4pWhEdX2QlRtuZkGSNn3AuAGj-DKoED0";
+const url = "https://bulksms.bsnl.in:5010/api/Send_SMS";
+const headers = {
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${bearerToken}`,
+};
 // create product
 const sendOTP = async (req, res) => {
   const { mobile_number } = req.body;
@@ -21,9 +30,32 @@ const sendOTP = async (req, res) => {
     }
 
     // Generate a 4-digit OTP
-    const otp = "1234";
-    //const otp = generateOTP(4);
-
+    // const otp = "1234";
+    const otp = generateOTP(4);
+    const data = {
+      Header: "PSYREG",
+      Target: mobile_number,
+      Is_Unicode: "0",
+      Is_Flash: "0",
+      Message_Type: "SI",
+      Entity_Id: "1401536610000064172",
+      Content_Template_Id: "1407169228448952208",
+      Consent_Template_Id: "",
+      Template_Keys_and_Values: [
+        {
+          Key: "var",
+          Value: otp,
+        },
+      ],
+    };
+    axios
+      .post(url, data, { headers })
+      .then((response) => {
+        console.log("Response:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error.response?.data || "An error occurred");
+      });
     // Get the current timestamp and the timestamp 5 minutes from now
     const currentTime = new Date();
     const expiryTime = new Date(currentTime.getTime() + 5 * 60000);
@@ -94,9 +126,34 @@ const resendOTP = async (req, res) => {
     }
 
     // Generate a new 4-digit OTP
-    const otp = "1234";
-    //const otp = generateOTP(4);
+    // const otp = "1234";
+    const otp = generateOTP(4);
 
+    const data = {
+      Header: "PSYREG",
+      Target: mobile_number,
+      Is_Unicode: "0",
+      Is_Flash: "0",
+      Message_Type: "SI",
+      Entity_Id: "1401536610000064172",
+      Content_Template_Id: "1407169228448952208",
+      Consent_Template_Id: "",
+      Template_Keys_and_Values: [
+        {
+          Key: "var",
+          Value: otp,
+        },
+      ],
+    };
+
+    axios
+      .post(url, data, { headers })
+      .then((response) => {
+        console.log("Response:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error.response?.data || "An error occurred");
+      });
     // Get the current timestamp and the timestamp 5 minutes from now
     const currentTime = new Date();
     const expiryTime = new Date(currentTime.getTime() + 5 * 60000);

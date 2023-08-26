@@ -102,10 +102,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    payment_mode: {
-      type: DataTypes.STRING(100),
-      allowNull: true,
-    },
+    // payment_mode: {
+    //   type: DataTypes.STRING(100),
+    //   allowNull: true,
+    // },
     payment_status: {
       type: DataTypes.STRING(100),
       allowNull: true,

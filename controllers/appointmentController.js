@@ -5,7 +5,14 @@ const base64Img = require("base64-img");
 const Appointment = db.appointment;
 const request = require("request");
 const fs = require("fs");
-
+const axios = require("axios");
+const bearerToken =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjEwNDg0IDUiLCJuYmYiOjE2OTMwMzgxNDIsImV4cCI6MTcyNDU3NDE0MiwiaWF0IjoxNjkzMDM4MTQyLCJpc3MiOiJodHRwczovL2J1bGtzbXMuYnNubC5pbjo1MDEwIiwiYXVkIjoiMTA0ODQgNSJ9.3zzhR-D2kYV4pWhEdX2QlRtuZkGSNn3AuAGj-DKoED0";
+const url = "https://bulksms.bsnl.in:5010/api/Send_SMS";
+const headers = {
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${bearerToken}`,
+};
 const transporter = nodemailer.createTransport({
   host: "mail.psychaxis.com",
   port: 465,
@@ -72,6 +79,38 @@ const updateAppointment = async (req, res) => {
       return res.status(404).json({ message: "Appointment not found." });
     }
     await appointment.update(req.body);
+    const data = {
+      Header: "PSYXIS",
+      Target: appointment.mobile_no,
+      Is_Unicode: "0",
+      Is_Flash: "0",
+      Message_Type: "SI",
+      Entity_Id: "1401536610000064172",
+      Content_Template_Id: "1407169228497189465",
+      Consent_Template_Id: "",
+      Template_Keys_and_Values: [
+        {
+          Key: "bkdate",
+          Value: appointment.createdAt,
+        },
+        {
+          Key: "name",
+          Value: appointment.full_name,
+        },
+        {
+          Key: "phno",
+          Value: appointment.mobile_no,
+        },
+      ],
+    };
+    axios
+      .post(url, data, { headers })
+      .then((response) => {
+        console.log("Response:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error.response?.data || "An error occurred");
+      });
     res.json({
       status: 200,
       message: "Appointment updated successfully!",
